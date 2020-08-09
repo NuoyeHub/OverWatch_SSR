@@ -1,7 +1,7 @@
 # OVERWATCH_SSR
 
 杀敌升级带天赋  
-作者：HUGH#52711   
+Overwatch:HUGH#52711   
 人数不够请房主手动进入比赛模式  
 未完成，有兴趣的老哥请移步项目  
 项目地址在描述中  
@@ -50,7 +50,7 @@
 
 
 ---	
-### HUDWB		玩家HUD和地图文本
+### HUDWB	玩家HUD和地图文本
 	0	地图文本
 	1	玩家文本
 	2	满级HUD
@@ -80,17 +80,17 @@
 
 ---
 ### 独立元素
-	DD			电刀调用
+	DD		电刀调用
 	TF_Max		天赋最大抽奖值（天赋的随机选项1-tf_max）
 
 ---
 ### 子程序对照表
 	SX_CSH		属性初始化
 	SX_SX		属性刷新
-	WB			头顶文本
-	HUD			玩家hud
+	WB		头顶文本
+	HUD		玩家hud
 	SX_HUD		属性hud
-	TF			天赋初始化
+	TF		天赋初始化
 	SM_BD		生命值变动
 	TF_XGDY		天赋效果调用
 	
