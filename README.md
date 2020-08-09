@@ -2,6 +2,7 @@
 
 杀敌升级带天赋  
 作者：HUGH#52711   
+项目地址：https://github.com/NuoyeHub/OverWatch_SSR
 
 ## 介绍
  我不是专业的程序员，也不太懂有什么规范，欢迎大家提供意见建议。  
