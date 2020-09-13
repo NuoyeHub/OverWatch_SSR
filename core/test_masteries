@@ -6,8 +6,8 @@
 
 	玩家:
 		26: property_player
+		27: masteries_player
 		28: id_player
-		30: TF_DY
 }
 
 子程序
@@ -62,10 +62,12 @@
 		"规则"
 		创建HUD文本(事件玩家, 自定义字符串("作者：HUGH#52711   \r\n人数不够请房主手动进入比赛模式  \r\n出现恶性bug请房主手动复位\r\n[互动+蹲+跳跃]\r\n项目地址在简介"), 无, 无, 右边, 1, 白色, 蓝色, 白色,
 			可见和字符串, 默认可见度);
-		"天赋"
-		创建HUD文本(事件玩家, 事件玩家.TF_DY[0], 无, 无, 右边, 0, 黄色, 白色, 白色, 可见和字符串, 默认可见度);
-		创建HUD文本(事件玩家, 事件玩家.TF_DY[1], 无, 无, 右边, 0, 黄色, 白色, 白色, 可见和字符串, 默认可见度);
-		创建地图文本(所有玩家(所有队伍), 字符串("{0}，{1}", 事件玩家.TF_DY[5], 事件玩家.TF_DY[6]), 事件玩家, 2, 根据表面截取, 可见，位置和字符串, 黄色, 默认可见度);
+		调用子程序(_Initialize_Property);
+		调用子程序(_Initialize_Masteries);
+		创建HUD文本(事件玩家, 自定义字符串("{0}", 全局.masterise_player_text_Global[事件玩家.masteries_player[0]]), 无, 无, 右边, 0, 黄色, 白色, 白色, 可见和字符串, 默认可见度);
+		创建HUD文本(事件玩家, 自定义字符串("{0}", 全局.masterise_player_text_Global[事件玩家.masteries_player[1]]), 无, 无, 右边, 0, 黄色, 白色, 白色, 可见和字符串, 默认可见度);
+		创建地图文本(所有玩家(所有队伍), 自定义字符串("{0},{1}", 全局.masterise_map_text_Global[事件玩家.masteries_player[0]],
+			全局.masterise_map_text_Global[事件玩家.masteries_player[1]]), 事件玩家, 1.500, 根据表面截取, 可见，位置和字符串, 黄色, 默认可见度);
 	}
 }
 
@@ -73,7 +75,19 @@
 {
 	事件
 	{
-		持续 - 全局;
+		持续 - 每名玩家;
+		双方;
+		全部;
+	}
+
+	条件
+	{
+		按钮被按下(事件玩家, 互动) == 真;
+	}
+
+	动作
+	{
+		调用子程序(_Reset);
 	}
 }
 
@@ -81,7 +95,15 @@
 {
 	事件
 	{
-		持续 - 全局;
+		玩家阵亡;
+		双方;
+		全部;
+	}
+
+	动作
+	{
+		调用子程序(_Initialize_Property);
+		调用子程序(_Initialize_Masteries);
 	}
 }
 
@@ -89,7 +111,20 @@
 {
 	事件
 	{
-		持续 - 全局;
+		持续 - 每名玩家;
+		双方;
+		全部;
+	}
+
+	条件
+	{
+		游戏正在进行中 == 真;
+	}
+
+	动作
+	{
+		调用子程序(_Initialize_Property);
+		调用子程序(_Initialize_Masteries);
 	}
 }
 
@@ -100,6 +135,18 @@
 		子程序;
 		_Reset;
 	}
+
+	动作
+	{
+		事件玩家.id_player = 0;
+		移除玩家的所有生命值。(所有玩家(所有队伍));
+		事件玩家.property_player = 0;
+		调用子程序(_Initialize_Property);
+		事件玩家.masteries_player = 0;
+		调用子程序(_Initialize_Masteries);
+		消除所有图标;
+		消除所有效果;
+	}
 }
 
 规则("_Refresh")
@@ -108,6 +155,17 @@
 	{
 		子程序;
 		_Refresh;
+	}
+
+	动作
+	{
+		设置最大生命值(事件玩家, 事件玩家.property_player[1]);
+		调用子程序(_Blood);
+		设置造成伤害(事件玩家, 事件玩家.property_player[2]);
+		设置移动速度(事件玩家, 事件玩家.property_player[3]);
+		设置造成治疗(事件玩家, 事件玩家.property_player[4]);
+		设置受到治疗(事件玩家, 事件玩家.property_player[5]);
+		设置受到伤害(事件玩家, 事件玩家.property_player[6]);
 	}
 }
 
@@ -124,25 +182,25 @@
 		事件玩家.property_player[0] = 随机整数(1, 10);
 		"最大生命值"
 		事件玩家.property_player[1] = 100;
-		设置最大生命值(事件玩家, 事件玩家.property_player[0]);
+		设置最大生命值(事件玩家, 事件玩家.property_player[1]);
 		"生命池"
-		事件玩家.property_player[2] = 事件玩家.property_player[1] * 随机整数(10, 40);
+		事件玩家.property_player[1] = 事件玩家.property_player[0] * 随机整数(10, 40);
 		调用子程序(_Blood);
 		"攻击"
 		事件玩家.property_player[2] = 随机整数(80, 120);
-		设置造成伤害(事件玩家, 事件玩家.property_player[3]);
+		设置造成伤害(事件玩家, 事件玩家.property_player[2]);
 		"速度"
 		事件玩家.property_player[3] = 随机整数(95, 120);
-		设置移动速度(事件玩家, 事件玩家.property_player[4]);
+		设置移动速度(事件玩家, 事件玩家.property_player[3]);
 		"造成治疗"
 		事件玩家.property_player[4] = 随机整数(80, 120);
-		设置造成治疗(事件玩家, 事件玩家.property_player[6]);
+		设置造成治疗(事件玩家, 事件玩家.property_player[4]);
 		"受到治疗"
 		事件玩家.property_player[5] = 随机整数(80, 120);
 		设置受到治疗(事件玩家, 事件玩家.property_player[5]);
 		"防御"
 		事件玩家.property_player[6] = 100;
-		设置受到伤害(事件玩家, 事件玩家.property_player[7]);
+		设置受到伤害(事件玩家, 事件玩家.property_player[6]);
 	}
 }
 
@@ -152,6 +210,19 @@
 	{
 		子程序;
 		_Initialize_Masteries;
+	}
+
+	动作
+	{
+		"天赋抽奖初始化"
+		事件玩家.masteries_player[0] = 0;
+		事件玩家.masteries_player[1] = 0;
+		"天赋抽奖最大值"
+		事件玩家.masteries_player[2] = 21;
+		While(事件玩家.masteries_player[0] == 事件玩家.masteries_player[1]);
+			事件玩家.masteries_player[0] = 随机整数(1, 事件玩家.masteries_player[2]);
+			事件玩家.masteries_player[1] = 随机整数(1, 事件玩家.masteries_player[2]);
+		End;
 	}
 }
 
