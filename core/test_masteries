@@ -8,6 +8,7 @@
 		26: property_player
 		27: masteries_player
 		28: id_player
+		30: TF_DY
 }
 
 子程序
@@ -181,8 +182,8 @@
 	{
 		事件玩家.property_player[0] = 随机整数(1, 10);
 		"最大生命值"
-		事件玩家.property_player[1] = 100;
-		设置最大生命值(事件玩家, 事件玩家.property_player[1]);
+		事件玩家.property_player[7] = 100;
+		设置最大生命值(事件玩家, 事件玩家.property_player[7]);
 		"生命池"
 		事件玩家.property_player[1] = 事件玩家.property_player[0] * 随机整数(10, 40);
 		调用子程序(_Blood);
@@ -223,6 +224,57 @@
 			事件玩家.masteries_player[0] = 随机整数(1, 事件玩家.masteries_player[2]);
 			事件玩家.masteries_player[1] = 随机整数(1, 事件玩家.masteries_player[2]);
 		End;
+		"玻璃大炮"
+		If(数组包含(事件玩家.masteries_player, 1) == 真);
+			事件玩家.property_player[2] = 事件玩家.property_player[2] * 5;
+		End;
+		"不朽之心"
+		If(数组包含(事件玩家.masteries_player, 5) == 真);
+			事件玩家.TF_DY[2] = 1;
+		End;
+		"扁酒壶"
+		If(数组包含(事件玩家.masteries_player, 6) == 真);
+			事件玩家.property_player[2] = 取整(事件玩家.property_player[2] * 3, 上);
+			事件玩家.property_player[6] = 取整(事件玩家.property_player[6] * 1.500, 上);
+		End;
+		"超级标志"
+		If(数组包含(事件玩家.masteries_player, 7) == 真);
+			事件玩家.property_player[1] = 取整(事件玩家.property_player[1] * 1.300, 上);
+			事件玩家.property_player[2] = 取整(事件玩家.property_player[2] * 1.300, 上);
+			事件玩家.property_player[3] = 取整(事件玩家.property_player[3] * 1.300, 上);
+			事件玩家.property_player[4] = 取整(事件玩家.property_player[4] * 1.300, 上);
+			事件玩家.property_player[5] = 取整(事件玩家.property_player[5] * 1.300, 上);
+			事件玩家.property_player[6] = 取整(事件玩家.property_player[6] * 0.700, 上);
+		End;
+		"编译橘子"
+		If(数组包含(事件玩家.masteries_player, 10) == 真);
+			事件玩家.property_player[1] = 取整(事件玩家.property_player[1] * 2, 上);
+		End;
+		"彩票"
+		If(数组包含(事件玩家.masteries_player, 11) == 真);
+			等待(4, 无视条件);
+			设置弹药(事件玩家, 0, 777);
+		End;
+		"黑暗面具"
+		If(数组包含(事件玩家.masteries_player, 17) == 真);
+			事件玩家.property_player[7] = 取整(事件玩家.property_player[7] * 0.500, 上);
+			事件玩家.property_player[1] = 取整(事件玩家.property_player[1] * 0.600, 上);
+		End;
+		"核能电池"
+		If(数组包含(事件玩家.masteries_player, 19) == 真);
+			设置终极技能充能(事件玩家, 100);
+		End;
+		"滑板鞋"
+		If(数组包含(事件玩家.masteries_player, 20) == 真);
+			事件玩家.property_player[3] = 取整(事件玩家.property_player[3] * 1.300, 上);
+		End;
+		"玻璃大炮"
+		If(数组包含(事件玩家.masteries_player, 21) == 真);
+			等待(5, 无视条件);
+			设置最大弹药(事件玩家, 0, 最大弹药量(事件玩家, 0) * 2);
+			设置最大弹药(事件玩家, 1, 最大弹药量(事件玩家, 1) * 2);
+		End;
+		调用子程序(_Refresh);
 	}
 }
 
